@@ -1,0 +1,171 @@
+package ${rootPackage}${module}.${function}.controller;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.taiji.core.base.controller.BaseController;
+import com.taiji.core.utils.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import com.taiji.core.base.result.Result;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestBody;
+import com.taiji.core.utils.PageInfo;
+import com.taiji.core.logback.LOG;
+#if(${convert}=="yes")
+import com.cattsoft.baseplatform.func.pub.web.IdConverter;
+import com.cattsoft.baseplatform.func.pub.web.IdConvertionBean;
+import com.cattsoft.baseplatform.func.pub.web.IdDomainBean;
+#end
+import ${rootPackage}${module}.${function}.entity.${upperTableName};
+import ${rootPackage}${module}.${function}.service.${upperTableName}Service;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.Logical;
+/** 
+ * 模块名称：${module} 功能名称：${function}
+ * @author ${author}
+ * 创建时间：${date}
+ */
+@RequestMapping("/${lowerTableName}")
+@Controller
+public class ${upperTableName}Controller extends BaseController {
+
+	private static final Logger LOGGER = LogManager.getLogger(${upperTableName}Controller.class);
+	
+	
+	//spring装载service bean
+	@Autowired
+	private ${upperTableName}Service ${lowerTableName}Service;
+
+	/**
+	 * 保存
+	 * @author ${author}
+	 * @version 1.0
+	 * @date ${date}
+	 *
+	 */
+#if(${convert}=="no")	
+#if(${genPur})
+	@RequiresPermissions(value = { "${lowerTableName}/save" })
+#end
+	@PostMapping("/save")
+	public @ResponseBody Result save(@RequestBody ${upperTableName} ${lowerTableName},HttpServletRequest request) {
+		LOG.info(LOGGER, request, "添加");
+		try {
+			${lowerTableName}.setCreater(getLoginName());
+			${lowerTableName}.setUpdater(getLoginName());
+		    ${lowerTableName} = ${lowerTableName}Service.save(${lowerTableName});
+		} catch (Exception e) {
+			renderError("添加失败！");
+			e.printStackTrace();
+		}
+		return renderSuccess();
+	}
+	
+#end
+
+
+
+
+
+	/**
+	 * 查询全部
+	 * @author ${author}
+	 * @version 1.0
+	 * @date ${date}
+	 */
+#if(${convert}=="no")
+#if(${genPur})
+	@RequiresPermissions(value = {"/jsp/${Name}${basePackage}${module}/${function}/${lowerTableName}List.jsp","${lowerTableName}/list" },logical = Logical.OR)
+#end
+	@PostMapping("/list")
+	public @ResponseBody Result list(@RequestBody PageInfo<${upperTableName}> pageInfo,HttpServletRequest request){
+		LOG.info(LOGGER, request, "列表查询");
+		//查询出list结果
+		try {
+			pageInfo = ${lowerTableName}Service.findPage(pageInfo);
+		} catch (Exception e) {
+			renderError("查询失败！");
+			e.printStackTrace();
+		}
+		return renderSuccess(pageInfo);
+	}
+#end
+
+
+
+	/**
+	 * 按主键查询
+	 * @author ${author}
+	 * @version 1.0
+	 * @date ${date}
+	 */
+#if(${genPur})
+	@RequiresPermissions(value = { "${lowerTableName}/selectByPrimaryKey" })
+#end 
+	@GetMapping("/selectByPrimaryKey")
+	public @ResponseBody Result selectByPrimaryKey(String id,HttpServletRequest request){
+		LOG.info(LOGGER, request, "查询");
+		${upperTableName} ${lowerTableName} = null;
+		try {
+			if(StringUtils.isNotBlank(id)){
+				${lowerTableName} = ${lowerTableName}Service.find(id);
+			}
+		} catch (Exception e) {
+			renderError("查询失败！");
+			e.printStackTrace();
+		}
+		return renderSuccess(${lowerTableName});
+	}
+	
+	/**
+	 * 按主键更新,只更新对象中不为空的字段
+	 * @author ${author}
+	 * @version 1.0
+	 * @date ${date}
+	 */
+#if(${genPur})
+	@RequiresPermissions(value = { "${lowerTableName}/update" })
+#end 
+	@PostMapping("/update")
+	@ResponseBody
+	public Object update(@RequestBody ${upperTableName} ${lowerTableName},HttpServletRequest request){
+		LOG.info(LOGGER, request, "更新");
+		int i = 0;
+			try {
+				${lowerTableName}.setUpdater(getLoginName());
+				${lowerTableName} = ${lowerTableName}Service.update(${lowerTableName});
+			} catch (Exception e) {
+				renderError("更新失败！");
+				e.printStackTrace();
+			}
+		return renderSuccess();
+	}
+
+
+	/**
+	 * 按主键删除
+	 * @author ${author}
+	 * @version 1.0
+	 * @date ${date}
+	 */
+#if(${genPur})
+	@RequiresPermissions(value = { "${lowerTableName}/delete" })
+#end 
+	@GetMapping("/delete")
+	public @ResponseBody Result delete(String id,HttpServletRequest request){
+		LOG.info(LOGGER, request, "删除");
+		int i = 0;
+		try {
+			if(StringUtils.isNotBlank(id)){
+				 ${lowerTableName}Service.delete(id);
+			}
+		} catch (Exception e) {
+			renderError("删除失败！");
+			e.printStackTrace();
+		}
+		return renderSuccess();
+	}
+}

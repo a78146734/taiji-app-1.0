@@ -1,0 +1,25 @@
+package ${rootPackage}${module}.${function}.entity;
+import com.taiji.eap.generate.core.entity.Entity;
+
+	/** 
+	 * 模块名称：${module} 功能名称：${function}
+	 * @author ${author}
+	 * 创建时间：${date}
+	 */
+public class ${upperTableName}  extends Entity {
+#foreach(${column}in${columns})
+	#set($lowerColumn = $generateCode.convertFirstLetterToLowerCase($column.getColumnName()))
+	private String ${lowerColumn};//$column.getRemarks()
+#end
+#foreach(${column}in${columns})
+	#set($lowerColumn = $generateCode.convertFirstLetterToLowerCase($column.getColumnName()))
+	
+	public String get$column.getColumnName()() {
+		return $lowerColumn;
+	}
+
+	public void set$column.getColumnName()(String $lowerColumn) {
+		this.$lowerColumn = $lowerColumn;
+	}
+#end
+}

@@ -1,0 +1,82 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+	<head>
+	<%@include file="../../../../commons/global.jsp"%>
+	<%@include file="../../../../commons/xw/basejs.jsp"%>
+	#if(${js}=="yes")
+	<script type="text/javascript" src="js/${lowerTableName}Add.js"></script>
+	#end
+	
+	#if(${css}=="yes")
+	<link rel="stylesheet" type="text/css" href="css/${lowerTableName}Add.css">
+	#end
+
+</head>
+<body >
+
+<form id="form1"  >
+
+	<div class="user_manage">
+			<p class="ri_jczctitle">
+	           <span class="ri_jczctitletxt">新增页面</span>
+	           <span class="ri_jczctitlemore"></span>
+	         </p>
+	         <div class="user_list">
+				<table class="gridtable04 "  >
+				
+				  #foreach(${column}in${columns})
+				  #set($lowerColumn = $generateCode.convertFirstLetterToLowerCase($column.getColumnName()))
+				  	#if(${velocityCount}>1)
+					  	#if(${velocityCount}%2==0)
+					    			<tr><td class="tablecolor">$column.getRemarks()：</td><td  ><input type="text" name="${lowerColumn}"   placeholder="请输入$column.getRemarks()"></td>
+					  		
+					  		#elseif(${velocityCount}%3==0)
+					  				<td class="tablecolor">$column.getRemarks()：</td><td  ><input type="text" name="${lowerColumn}"   placeholder="请输入$column.getRemarks()"></td></tr>
+					  		
+					  		#elseif(${velocityCount}%3==0)
+					  				<tr><td class="tablecolor">$column.getRemarks()：</td><td  ><input type="text" name="${lowerColumn}"   placeholder="请输入$column.getRemarks()"></td></tr>
+					  		
+					  		#else
+					    			<td class="tablecolor">$column.getRemarks()：</td><td ><input type="text" name="${lowerColumn}"   placeholder="请输入$column.getRemarks()"></td></tr>
+					  	
+					  	#end
+					  #end
+				  #end
+				</table>
+			</div>
+		</div>
+		
+		<div class="tablebut"> 
+               <button type="button" onclick="Submit();">提交</button>&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" onclick="back();">取消</button>
+        </div>
+	</form>
+</body>
+<script type="text/javascript">
+	function Submit() {
+			var params = JSON.stringify($("#form1").serializeJSON());
+			$.ajax({
+		 		type: "post",
+		 		url: basePath+"/${lowerTableName}/save",
+		 		data:params,
+		 		async: true,
+		 		contentType: "application/json; charset=utf-8",
+		 		dataType: "text",
+		 		beforeSend: function(){},  
+	        	complete: function(){},
+		 		success: function(data){
+		 			var das = JSON.parse(data);
+		 			if(das.success){
+		 				location.href=basePath + "/jsp/utils/massage/success.jsp?url="+basePath+"/jsp/${Name}${basePackage}${module}/${function}/${lowerTableName}List.jsp";
+		 			}else{
+		 				location.href=basePath + "/jsp/utils/massage/failure.jsp?url="+basePath+"/jsp/${Name}${basePackage}${module}/${function}/${lowerTableName}List.jsp";
+		 			}
+		 		}
+ 			});
+		}
+	
+		function back() {
+			location.href=basePath + "/jsp/${basePackage}${module}/${function}/${lowerTableName}List.jsp";
+		}
+</script>
+</html>

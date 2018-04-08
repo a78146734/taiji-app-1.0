@@ -1,0 +1,168 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+	font-family:"Microsoft YaHei";
+	width:100%;
+	}
+html,body{
+	margin:0;
+	padding:0;
+	html { overflow-x: hidden; overflow-y: auto; 
+
+	}
+table,tr,td,th{
+	margin:0px;
+	padding:0px
+	}
+	
+	
+.button{width:61px; 
+        height:28px;
+		border: 1px solid #22bfc1; 
+		cursor:pointer; 
+		background-color:#22bfc1; 
+		font-size:14px; 
+		color:#fff; 
+		margin-left:30px;
+		}
+.textarea{
+	   height:100px; 
+	   width:350px; 
+	   border: 1px solid #eee;
+	}
+.textareatxt{
+	color:#666; 
+	font-size:14px; 
+	margin-left:30px;
+	}
+.input{
+	height:30px; 
+	width:120px; 
+	border:1px solid #eee; 
+	margin-left:15px;	
+	}
+.checkbox{
+	height:15px; 
+	width:15px; 
+	border:1px solid #eee; 
+	margin-left:15px;
+	background-image:url(image/inputradio.gif);
+	background-position: -24px 0;
+	opacity: 0;
+   cursor: pointer;
+   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+   filter: alpha(opacity=0);
+	}
+	
+.radio{
+	height:15px; 
+	width:15px; 
+	border:1px solid #eee; 
+	margin-left:0px;
+	opacity: 0;
+    cursor: pointer;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    filter: alpha(opacity=0);
+
+	}	
+.checkboximage{
+	width:15px; 
+	height:15px;
+	position: relative;
+    display: inline-block; 
+	margin-left:15px;
+	}
+.checkboximage input{display: none;}
+.checkboximage label { 
+            position: absolute; 
+            width: 16px; 
+            height: 16px; 
+            top: 0; 
+            left: 0; 
+            border: 2px solid #cacaca; 
+            border-radius: 0; 
+            background: #fff; 
+        }
+ /*鼠标悬浮样式*/
+.checkboximage label:hover { 
+            border-color: #22bfc1; 
+        }
+.checkboximage label:after { 
+            position: absolute; 
+            content: ""; 
+            width: 8px; 
+            height: 4px; 
+            border: 2px solid #cacaca; 
+            border-top: none; 
+            border-right: none; 
+            opacity: 0.4; 
+            transform: rotate(-45deg); 
+            top: 4px; 
+            left: 3px; 
+			
+        }
+.checkboximage label:hover:after { 
+            border-color: #22bfc1; 
+        }
+.checkboximage input:checked+label { 
+            border: 2px solid #22bfc1; 
+        }
+.checkboximage input:checked+label:after { 
+            opacity: 1; 
+            border: 2px solid #22bfc1; 
+            border-top: none; 
+            border-right: none; 
+        }
+		
+		
+.radioimage{
+	width:15px; 
+	height:15px;
+	position: relative;
+    display: inline-block; 
+	}
+.radioimage input{display: none;}
+.radioimage label { 
+            position: absolute; 
+            width: 16px; 
+            height: 16px; 
+            top: 0; 
+            left: 0; 
+            border: 2px solid #cacaca; 
+            border-radius:50%; 
+            background: #fff; 
+        }
+ /*鼠标悬浮样式*/
+.radioimage label:hover { 
+            border-color: #22bfc1; 
+        }
+.radioimage label:after { 
+            position: absolute; 
+            content: ""; 
+            width: 8px; 
+            height: 4px; 
+            border: 2px solid #cacaca; 
+            border-top: none; 
+            border-right: none; 
+            opacity: 0.4; 
+            transform: rotate(-45deg); 
+            top: 4px; 
+            left: 3px; 
+			
+        }
+.radioimage label:hover:after { 
+            border-color: #22bfc1; 
+        }
+.radioimage input:checked+label { 
+            border: 2px solid #22bfc1; 
+        }
+.radioimage input:checked+label:after { 
+            opacity: 1; 
+            border: 2px solid #22bfc1; 
+            border-top: none; 
+            border-right: none; 
+        }
+
+
+
+

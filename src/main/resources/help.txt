@@ -1,0 +1,7 @@
+1.安装oracl6.jar 
+删除本地maven仓库的com\oracle\ojdbc6\11.2.0.1.0目录
+右键项目 选择Run as
+->Maven Bulid...
+->Goals 那输入 install:install-file -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.1.0 -Dpackaging=jar -Dfile=ojdbc6.jar 
+->Run
+右键项目 maven->Update project...

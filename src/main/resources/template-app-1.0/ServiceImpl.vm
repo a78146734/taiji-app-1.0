@@ -1,0 +1,32 @@
+package ${rootPackage}${module}.${function}.service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Service;
+import com.taiji.core.base.service.BaseServiceImpl;
+import ${rootPackage}${module}.${function}.repository.${upperTableName}Repository;
+import ${rootPackage}${module}.${function}.entity.${upperTableName};
+	/** 
+	 * 模块名称：${module} 功能名称：${function}
+	 * @author ${author}
+	 * @version 1.0
+	 * @date ${date}
+	 */
+@Service
+public class ${upperTableName}ServiceImpl extends BaseServiceImpl<${upperTableName},String> implements ${upperTableName}Service {
+	@Autowired
+	private ${upperTableName}Repository ${lowerTableName}Repository;
+
+	/**
+	 * 请将自定义方法按此格式写在下面	
+	 * @author
+	 * @version
+	 * @see
+	 * @param 
+	 * @return  
+	 * @exception
+	 * @date
+	 * 
+	 */
+
+
+}

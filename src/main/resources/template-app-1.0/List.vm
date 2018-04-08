@@ -1,0 +1,212 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+	<head>
+	<%@include file="../../../../commons/global.jsp"%>
+	<%@include file="../../../../commons/xw/basejs.jsp"%>
+	#if(${js}=="yes")
+	<script type="text/javascript" src="js/${lowerTableName}List.js"></script>
+	#end
+	#if(${css}=="yes")
+	<link rel="stylesheet" type="text/css" href="css/${lowerTableName}List.css">
+	#end
+	
+</head>
+<body >
+<form id="form1">
+	<div class="user_manage">
+				<p class="ri_jczctitle">
+					<span class="ri_jczctitletxt">标题</span><span  
+					class="ri_jczctitlemore butimg" onclick="sideDiv(this);"></span>
+				</p>
+			<div class="hj_username">
+				<div class="hj_username1" id="search">
+				#foreach(${column}in${columns})
+					#set($lowerColumn = $generateCode.convertFirstLetterToLowerCase($column.getColumnName()))
+#if(${velocityCount}==2)
+		<span class="hj_usertxtname">$column.getRemarks()：</span> 
+		<span><input data-condition="like" name="${lowerColumn}" type="text"  class="hj_usernameinp"></span>
+#elseif(${velocityCount}==3)  
+        <span class="hj_usertxtname">$column.getRemarks()：</span> 
+		<span><input data-condition="like" name="${lowerColumn}" type="text"  class="hj_usernameinp"></span>
+#elseif(${velocityCount}==4) 
+		<span class="hj_usertxtname">$column.getRemarks()：</span> 
+		<span><input data-condition="like" name="${lowerColumn}" type="text"  class="hj_usernameinp"></span>				   
+				
+#end				
+#end	
+		<span>&nbsp;&nbsp;<button onclick="Query();" class="button" type="button">查询</button></span>
+		#if(${genPur})<shiro:hasPermission name='${lowerTableName}/save'>#end
+			<span class='hj_mar20'>&nbsp;&nbsp;<button onclick="add();"class="button" type="button">添加</button></span>
+		#if(${genPur})</shiro:hasPermission>#end
+			</div>	
+		</div>					
+			
+		<div id="hj_username_2" class="hj_username_2">
+			<div class="hj_username1">
+				#foreach(${column}in${columns})
+					#set($lowerColumn = $generateCode.convertFirstLetterToLowerCase($column.getColumnName()))
+#if(${velocityCount}==5)
+		<span class="hj_usertxtname">$column.getRemarks()：</span> 
+		<span><input name="${lowerColumn}" type="text"  class="hj_usernameinp"></span>
+#elseif(${velocityCount}==6)  
+        <span class="hj_usertxtname">$column.getRemarks()：</span> 
+		<span><input name="${lowerColumn}" type="text"  class="hj_usernameinp"></span>
+#elseif(${velocityCount}==7) 
+		<span class="hj_usertxtname">$column.getRemarks()：</span> 
+		<span><input name="${lowerColumn}" type="text"  class="hj_usernameinp"></span>				   				
+#end				
+#end	
+				</div>	
+			</div>	
+				
+		<div class="hj_user">
+			<table class="gridtable03">
+				<tr >
+			   <th style="width: 2%;">序号</th>
+			#foreach(${column}in${columns})
+				#if(${velocityCount}>1)
+					#set($lowerColumn = $generateCode.convertFirstLetterToLowerCase($column.getColumnName()))
+					<th  style="width: 10%;"><a id="${lowerColumn}" class="tha" onclick="sort(this);"><span>$column.getRemarks()</span><i class="thimg" ></i></a></th>
+				#end
+			#end
+				<th style="width:200px;">操作</th>
+				</tr>
+
+			<tbody id="tb" >
+				
+			</tbody>
+			</table>
+			</div>
+
+			</div>
+
+	<div  class="page"><%@include
+			file="../../../../commons/xw/page.jsp"%></div>		
+	</form>
+</body>
+<script type="text/javascript">
+		//初始加载
+		$(document).ready(function(){
+		 	doQuery();
+		 	$("#btnQuery").click(function(){
+				$("[name=pageNo]").val("0");
+				initSort("desc","createTime");
+				doQuery();
+		 	});
+		});
+		
+		//点击查询
+		function Query(){
+			$("[name=pageNo]").val("1");
+			doQuery();
+		}
+		
+		//查询执行方法
+		function doQuery(){
+			var condition=new Array();
+			$('#search').find("input").each(function(i,obj){
+				var val=$(obj).val();
+				if(val!=null&&val!=''){
+					var conditionItem={
+						name:$(obj).attr("name"),
+						value:"%"+$(obj).val()+"%",
+						condition:$(obj).data("condition")
+					}
+					condition.push(conditionItem);
+				}
+			});
+			
+			//转换分页信息到param
+			var params = swichPageInfo(condition);
+			$.ajax({
+		 		type: "post",
+		 		url: basePath+"/${lowerTableName}/list",
+		 		data:JSON.stringify(params),
+		 		async: true,
+		 		contentType: "application/json; charset=utf-8",
+		 		dataType: "text",
+		 		success: function(data){
+		 		
+		 			var das = JSON.parse(data); 
+		 			if(!das.success){
+		 				alert(das.msg);
+		 			}
+		 			pageValue(das.obj);
+		 			var sb = new StringBuilder();
+		              $.each(das.obj.rows,function(i,obj){ 
+			  			#foreach(${column}in${columns})
+			  				#set($lowerColumn = $generateCode.convertFirstLetterToLowerCase($column.getColumnName()))
+#if(${velocityCount}==1) sb.append("<tr><td>").append(++i).append("</td>");
+			#else sb.append("<td >").append(obj.${lowerColumn},25).append("</td>");
+			#end 
+			#end
+#foreach(${column}in${columns})	
+#if(${velocityCount}==1)	
+#set($lowerColumn = $generateCode.convertFirstLetterToLowerCase($column.getColumnName()))
+ sb.append("<td >");
+ #if(${genPur})sb.append("<shiro:hasPermission name='${lowerTableName}/selectByPrimaryKey'>"); #end
+ sb.append("<a class='hj_mar20' onclick='select(\"").append(obj.${lowerColumn}).append("\")'><i class='icon icon-search hj_bianji'></i><span class='hj_mar20'>查看</span></a>");
+ #if(${genPur})sb.append("</shiro:hasPermission>");	#end
+ 
+ #if(${genPur})sb.append("<shiro:hasPermission name='${lowerTableName}/update'>"); #end
+						sb.append("<a class='hj_mar20' onclick='update(\"").append(obj.${lowerColumn}).append("\");'><i class='icon icon-pencil hj_bianji'></i><span class='hj_mar20'>编辑</span></a>");
+ #if(${genPur})sb.append("</shiro:hasPermission>");#end
+ #if(${genPur})sb.append("<shiro:hasPermission name='${lowerTableName}/delete'>");#end
+						sb.append("<a class='hj_mar20' onclick='del(\"").append(obj.${lowerColumn}).append("\");'><i class='icon icon-remove-sign hj_delete'></i><span class='hj_mar20'>删除</span></a>");
+ #if(${genPur})sb.append("</shiro:hasPermission>");	#end	  			
+			  			sb.append("</td></tr>");
+			  			
+			  			});
+#end
+#end
+		 			 $("#tb").html(sb.toString());	 			 
+		 		}
+ 			});
+		}
+		
+		
+		function update(id){
+			location.href=basePath+"/jsp${basePackage}${module}/${function}/${lowerTableName}Update.jsp?id="+id;
+		}
+		
+		function select(id){
+			location.href=basePath+"/jsp${basePackage}${module}/${function}/${lowerTableName}Detail.jsp?id="+id;
+		}
+		
+		function add(){
+			location.href=basePath+"/jsp${basePackage}${module}/${function}/${lowerTableName}Add.jsp";
+		}	
+		
+		function del(id){
+		
+		layer.confirm('是否确定要删除该信息？', {
+			  btn: ['确定','取消'] //按钮
+			}, function(){
+				$.ajax({
+			 		type: "get",
+			 		url: basePath+"/${lowerTableName}/delete",
+			 		data:{
+			 			"id":id
+			 		},
+			 		async: true,
+			 		dataType: "text",
+			 		success: function(data){
+			 			var das = JSON.parse(data); 
+			 			if(das.success){
+			 				layer.msg('删除成功！', {icon: 1});
+			 				doQuery();
+			 			}else{
+			 				layer.msg('删除失败！', {icon: 2});
+			 			}
+			 		}
+	 			});
+			}, function(){
+			  
+			});
+			
+		}
+		
+		
+	</script>
+</html>

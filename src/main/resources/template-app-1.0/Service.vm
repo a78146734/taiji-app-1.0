@@ -1,0 +1,25 @@
+package ${rootPackage}${module}.${function}.service;
+
+import ${rootPackage}${module}.${function}.entity.${upperTableName};
+import ${rootPackage}${module}.${function}.repository.${upperTableName}Repository;
+import com.taiji.core.base.service.BaseService;
+	/** 
+	 * 模块名称：${module} 功能名称：${function}
+	 * @author ${author}
+	 * 创建时间：${date}
+	 */
+public interface ${upperTableName}Service extends BaseService<${upperTableName}, String>{
+
+	/**
+	 * 请将自定义方法按此格式写在下面	
+	 * @author
+	 * @version
+	 * @see
+	 * @param 
+	 * @return  
+	 * @exception
+	 * @date
+	 * 
+	 */
+
+}
