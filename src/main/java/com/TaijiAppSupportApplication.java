@@ -25,6 +25,7 @@ public class TaijiAppSupportApplication extends SpringBootServletInitializer {
 	}
 
 	public static void main(String[] args) {
+		System.out.println("");
 		SpringApplication.run(TaijiAppSupportApplication.class, args);
 	}
 }
